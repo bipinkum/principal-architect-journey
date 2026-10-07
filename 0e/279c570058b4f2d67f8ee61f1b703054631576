@@ -1,0 +1,14 @@
+.gitignore
+  h_ab047e8d2cd9c7 1-2
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.20",
+  "base_commit_sha": "0e279c570058b4f2d67f8ee61f1b703054631576",
+  "prompts": {},
+  "humans": {
+    "h_ab047e8d2cd9c7": {
+      "author": "bipinkum <bipinmit@gmail.com>"
+    }
+  }
+}
