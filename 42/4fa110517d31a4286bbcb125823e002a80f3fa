@@ -1,0 +1,18 @@
+week-1/day-1-scalability/package-lock.json
+  h_ab047e8d2cd9c7 1-890
+week-1/day-1-scalability/package.json
+  h_ab047e8d2cd9c7 1-15
+week-1/day-1-scalability/server.js
+  h_ab047e8d2cd9c7 1-17
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.20",
+  "base_commit_sha": "424fa110517d31a4286bbcb125823e002a80f3fa",
+  "prompts": {},
+  "humans": {
+    "h_ab047e8d2cd9c7": {
+      "author": "bipinkum <bipinmit@gmail.com>"
+    }
+  }
+}
