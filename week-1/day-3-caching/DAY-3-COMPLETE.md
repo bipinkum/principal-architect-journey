@@ -1,3 +1,5 @@
+# DAY 3: CACHING WITH REDIS (Complete)
+
 ## OVERVIEW
 **Day 3:** Caching Layer + Redis Integration for 100x Speed Improvement
 **Duration:** 6 hours (6:00 AM – 12:00 PM)
