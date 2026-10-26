@@ -1,0 +1,26 @@
+week-1/day-1-scalability/nginx.conf
+  h_ab047e8d2cd9c7 1-34
+week-1/day-1-scalability/package-lock.json
+  h_ab047e8d2cd9c7 12-83,681-808,870-885,1031-1039,1112-1120
+week-1/day-1-scalability/package.json
+  h_ab047e8d2cd9c7 13-15
+week-1/day-1-scalability/server-day-1.js
+  h_ab047e8d2cd9c7 1-17
+week-1/day-1-scalability/server-day-2.js
+  h_ab047e8d2cd9c7 1-78
+week-1/day-1-scalability/server.js
+  h_ab047e8d2cd9c7 2-4,8-46,48,51-200,204-223,225-227
+week-1/day-1-scalability/setup-db.js
+  h_ab047e8d2cd9c7 1-45
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.20",
+  "base_commit_sha": "c332311fac77e127331069521f8b8ce46786e819",
+  "prompts": {},
+  "humans": {
+    "h_ab047e8d2cd9c7": {
+      "author": "bipinkum <bipinmit@gmail.com>"
+    }
+  }
+}
