@@ -38,10 +38,113 @@ let cacheMisses = 0;
 
 app.use(express.json());
 
-// Health check
-app.get('/health', (req, res) => {
-  res.json({ status: 'healthy', port: PORT });
+// ===== HEALTH CHECK ENDPOINTS =====
+
+// 1. LIVENESS PROBE: Is the server alive?
+app.get('/health/live', (req, res) => {
+  // Simple check: Is the process running?
+  // If this endpoint responds, server is alive
+  res.json({
+    status: 'alive',
+    port: PORT,
+    timestamp: new Date().toISOString(),
+    uptime: process.uptime()
+  });
 });
+
+// 2. READINESS PROBE: Is the server ready to serve traffic?
+app.get('/health/ready', async (req, res) => {
+  try {
+    // Check 1: Can we connect to PostgreSQL?
+    await pool.query('SELECT 1');
+    const dbConnected = true;
+
+    // Check 2: Can we connect to Redis?
+    const redisPing = await redisClient.ping();
+    const cacheConnected = redisPing === 'PONG';
+
+    // All checks passed
+    if (dbConnected && cacheConnected) {
+      return res.json({
+        status: 'ready',
+        database: 'connected',
+        cache: 'connected',
+        port: PORT,
+        timestamp: new Date().toISOString()
+      });
+    }
+  } catch (error) {
+    // One or more checks failed
+    return res.status(503).json({
+      status: 'not_ready',
+      error: error.message,
+      port: PORT,
+      timestamp: new Date().toISOString()
+    });
+  }
+});
+
+// 3. DEEP HEALTH CHECK: Full system status
+app.get('/health/deep', async (req, res) => {
+  try {
+    // Check database
+    const dbResult = await pool.query('SELECT 1');
+    const dbConnected = dbResult.rows.length > 0;
+
+    // Check cache
+    const redisPing = await redisClient.ping();
+    const cacheConnected = redisPing === 'PONG';
+
+    // Get cache stats
+    const cacheStats = {
+      hits: cacheHits,
+      misses: cacheMisses,
+      hitRate: cacheMisses + cacheHits > 0 
+        ? ((cacheHits / (cacheHits + cacheMisses)) * 100).toFixed(2) + '%'
+        : '0%'
+    };
+
+    // Get uptime
+    const uptimeSeconds = process.uptime();
+    const uptimeMinutes = (uptimeSeconds / 60).toFixed(2);
+
+    return res.json({
+      status: 'healthy',
+      server: {
+        port: PORT,
+        uptime_seconds: uptimeSeconds,
+        uptime_minutes: uptimeMinutes,
+        timestamp: new Date().toISOString()
+      },
+      dependencies: {
+        database: dbConnected ? 'connected' : 'disconnected',
+        cache: cacheConnected ? 'connected' : 'disconnected'
+      },
+      metrics: {
+        cache_hits: cacheHits,
+        cache_misses: cacheMisses,
+        cache_hit_rate: cacheStats.hitRate
+      }
+    });
+  } catch (error) {
+    return res.status(503).json({
+      status: 'unhealthy',
+      error: error.message,
+      port: PORT,
+      timestamp: new Date().toISOString()
+    });
+  }
+});
+
+// 4. SIMPLE HEALTH (backward compatibility)
+app.get('/health', (req, res) => {
+  res.json({
+    status: 'healthy',
+    port: PORT,
+    timestamp: new Date().toISOString()
+  });
+});
+
 
 // Hello endpoint
 app.get('/api/hello', (req, res) => {
